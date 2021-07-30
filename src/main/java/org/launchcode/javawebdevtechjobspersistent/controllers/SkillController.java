@@ -1,5 +1,7 @@
 package org.launchcode.javawebdevtechjobspersistent.controllers;
 
+import org.launchcode.javawebdevtechjobspersistent.dataRepos.EmployerRepository;
+import org.launchcode.javawebdevtechjobspersistent.dataRepos.JobRepository;
 import org.launchcode.javawebdevtechjobspersistent.dataRepos.SkillRepository;
 import org.launchcode.javawebdevtechjobspersistent.models.Employer;
 import org.launchcode.javawebdevtechjobspersistent.models.Skill;
@@ -19,6 +21,7 @@ public class SkillController {
     @Autowired
     private SkillRepository skillRepository;
 
+
     @GetMapping
     public String displaySkills(Model model) {
         model.addAttribute("title", "All Skills");
@@ -28,6 +31,7 @@ public class SkillController {
 
     @GetMapping("add")
     public String displayAddSkillForm(Model model) {
+
         model.addAttribute(new Skill());
         return "skills/add";
     }
@@ -44,16 +48,30 @@ public class SkillController {
     }
 
     @GetMapping("view/{skillId}")
-    public String displayViewEmployer(Model model, @PathVariable int skillId) {
+    public String displayViewSkill(Model model, @PathVariable int skillId) {
 
-        Optional optEmployer = skillRepository.findById(skillId);
-        if (optEmployer.isPresent()) {
-            Skill skill = (Skill) optEmployer.get();
+        Optional<Skill> optSkill = skillRepository.findById(skillId);
+        if (optSkill.isPresent()) {
+            Skill skill = optSkill.get();
             model.addAttribute("skill", skill);
+            System.out.println(skill.getDescription());
+            System.out.println(skill.getId());
+            System.out.println(skill.getName());
+            System.out.println(skill.getJobs());
             return "skills/view";
         } else {
             return "redirect:../";
         }
+
+//        Optional<Skill> optEmployer = skillRepository.findById(skillId);
+//        if (optEmployer.isEmpty()) {
+//           return "redirect:../";
+//        }
+//
+//        Skill skill = optEmployer.get();
+//        model.addAttribute("skill", skill);
+//        return "skills/view";
+
     }
 
 
